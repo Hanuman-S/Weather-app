@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 1rem;
+}
+
+img{
+    display: block;
+    width:100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+body{
+    font-family: 'Roboto',sans-serif;
+    font-size: 1.5rem;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    background-image: url('../img/SKY\ pattern.jpg');
+    background-size: cover;
+    color: rgba(240, 240, 240, 0.88);
+}
+
+header,footer{
+    display:flex;
+}
+
+header h1 {
+    padding-left: 14rem;
+}
+
+main{
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.input,.nowWeather,.extendedForecast{
+    width :70vw;
+    margin : 0.5rem;
+    border-radius: 15px;
+    padding:0.5rem;
+}
+
+.nowWeather,.extendedForecast,input{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+}
+
+input{
+    padding-inline:1.5rem;
+    height:95%;
+    border-radius: 4vh;
+    border:none;
+    width:100%;
+    font-size: 1.5rem;
+}
+
+.nowWeather h2,.extendedForecast h2{
+    font-weight: 300;
+    padding-left: 2.5rem;
+}
+
+.nowWeather{
+    height:45vh;
+}
+
+.cityName{
+    position:absolute;
+    left : 16.7rem;
+    top :13rem;
+    font-weight: 400;
+    color : whitesmoke;
+    font-size:1rem;
+}
+
+.nowInfo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    width:100%;
+    height:85%;
+}
+
+.visual{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap:2rem;   
+    align-items: center;
+    border-right: 1px solid white;
+}
+
+figure i{
+    font-size: 8rem;
+    margin:1rem;
+    padding:0.5rem;
+}
+
+figcaption{
+    text-align: center;
+    font-weight: 600;
+}
+
+.avgTemp h3{
+    font-size: 10rem;
+    font-weight: 300;
+    color: whitesmoke;
+}
+
+.otherInfo{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    padding-left: 8rem;
+}
+
+.otherInfo i {
+    width:24px;
+    margin:2px;
+}
+
+.space{
+    margin-inline:1rem;
+    color : whitesmoke;
+    font-weight: 500;
+}
+
+.extendedForecast{
+    height:30vh;
+}
+
+footer{
+    justify-content: center;
+    font-size: 0.75rem;
+}

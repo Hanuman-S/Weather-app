@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+    >
+    <link rel="shortcut icon" href="/img/Favicon.svg" type="image/x-icon">
+    <title>Weather</title>
+</head>
+<body>
+    <header>
+        <h1>Weather</h1>
+    </header>
+    <main>
+        <section class="input">
+            <input type="text" name="city" id="city" placeholder="Enter the City Name">
+        </section>
+        <section class="nowWeather" id="nowWeather">
+            <h2>Current Weather</h2>
+            <h3 id="cityName" class="cityName"></h3>
+            <section class="nowInfo">
+                <section class="visual">
+                    <section class="icon">
+                        <figure><i class="fa-solid fa-sun" id="icon"></i>
+                            <figcaption id="iconText">Clear Sky</figcaption>
+                        </figure>
+                    </section>
+                    <section class="avgTemp">
+                        <h3 id="avgTemp">34°</h3>
+                    </section>
+                </section>
+                <section class="otherInfo">
+                    <section class="apparentTemp"><p id="apparentTemp">Feels like Temp</p></section>
+                    <section class="maxMinTemp">
+                        <p>
+                            <span class="maxTemp"><i class="fa-solid fa-angle-up"></i><span class="space" id="maxTemp">Max</span></span> &nbsp;&nbsp;&nbsp;
+                            <span class="minTemp"><i class="fa-solid fa-angle-down"></i><span class="space" id="minTemp">Min</span> </span>
+                        </p>
+                    </section>
+                    <section class="humidity"><p><i class="fa-solid fa-droplet"></i><span class="space" id="humidity">Humidity</span></p></section>
+                    <section class="wind"><p><i class="fa-solid fa-wind"></i><span class="space" id="wind">Wind</span></p></section>
+                    <section class="pressure"><p><i class="fa-solid fa-gauge"></i><span class="space" id="pressure">Pressure</span></p></section>
+                </section>
+            </section>
+        </section>
+        <section class="extendedForecast">
+            <h2>Extended Forecast</h2>
+<!--                 <section class="date"></section>
+            <section class="extendedIcon"></section>
+            <section class="dayWord"></section>
+            <section class="tempChanges"></section> -->
+        </section>
+    </main>
+    <footer>
+        <p>A project by Hanuman</p>
+    </footer>
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
