@@ -1,10 +1,12 @@
 //Detects the city and returns its latitude and longitude
-let input = document.querySelector('#city');
+let input = document.getElementById('city');
+
 input.addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
-        let city = input.value;
-        console.log(city);
+        let str = `${input.value}`;
+        let comma = str.indexOf(',');
+        let city = str.substring(0,comma);
         $.ajax({
             method: 'GET',
             url: 'https://api.api-ninjas.com/v1/geocoding?city=' + city,
@@ -22,6 +24,96 @@ input.addEventListener("keyup", function(event) {
     }
 });
 
+//Dropdown search bar to select cities
+input.addEventListener('input',cityDropdown);
+async function cityDropdown(){
+    let str = `${input.value}`;
+    if(str.length==3 || str.length==4){
+        let url = `https://city-and-state-search-api.p.rapidapi.com/cities/search?q=${input.value}`;
+        let options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': '0c68cfc138msha7069ac7906a59cp1789d1jsnb1ebd19f8630',
+                'x-rapidapi-host': 'city-and-state-search-api.p.rapidapi.com'
+            }
+        };
+    
+        try {
+            let response = await fetch(url, options);
+            let result = await response.json();
+            dropdown(result);
+            addClick();
+            
+        } catch (error) {
+            console.error(error);
+        }
+    } else if(str.length>4){
+        filterFunction(str);
+        addClick();
+    } else {
+        reset();
+        console.log('number of char is very less');
+    }
+}
+
+//Creates the dropdown list and displays it
+let dropdownList = document.getElementById('dropdownList');
+function dropdown(arr){
+    dropdownList.innerText = null;
+    for(obj of arr){
+        let el = document.createElement('p')
+        el.setAttribute('class','listElement');
+        el.innerText = `${obj.name}, ${obj.state_name}, ${obj.country_name}`;
+        dropdownList.appendChild(el);
+    }
+}
+
+//Filter Function 
+function filterFunction(str){
+    let listItems = document.getElementsByClassName('listElement');
+    for(item of listItems){
+        let txtVal = item.innerText;
+        if(txtVal.toUpperCase().indexOf(str.toUpperCase())>-1){
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    }
+}
+
+//Reset function makes the list to null
+function reset(){
+    dropdownList.innerText=null;
+}
+
+//On clicking one of the list items the input value should display the item
+function addClick(){
+    let listItems = document.getElementsByClassName('listElement')
+    for(let i=0;i<listItems.length;i++){
+        listItems[i].addEventListener('click',()=>{
+            input.value = listItems[i].innerText;
+            filterFunction(`${input.value} `);
+            let str = `${input.value}`;
+            let comma = str.indexOf(',');
+            let city = str.substring(0,comma);
+            $.ajax({
+                method: 'GET',
+                url: 'https://api.api-ninjas.com/v1/geocoding?city=' + city,
+                headers: { 'X-Api-Key': '8ABaxWRkXFm80cyyUtd1GQ==4RL00eNFtioVGugD'},
+                contentType: 'application/json',
+                success: function(result) {
+                    console.log(result);
+                    let URL =`https://api.tomorrow.io/v4/weather/forecast?location=${result[0].latitude},${result[0].longitude}&apikey=wXuwaN2pp65WVmgjWBOg1Gh8Qbof4Wl8`;
+                    getInfo(URL,result[0].name,result[0].state,result[0].country);
+                },  
+                error: function ajaxError(jqXHR) {
+                    console.error('Error: ', jqXHR.responseText);
+                }
+            });
+        })
+    }
+}
+
 //Gets info
 async function getInfo(URL,city,state,country){
     let response = await fetch(URL);
@@ -29,6 +121,8 @@ async function getInfo(URL,city,state,country){
     console.log(weatherInfo);
     checkWeather(weatherInfo);
     output(weatherInfo,city,state,country);
+    daysForecast.innerText = '';
+    extendedForecast(weatherInfo);
 }
 
 //Displays output
@@ -98,4 +192,70 @@ function windDirec(weatherInfo){
     } else if(weatherInfo.timelines.daily[0].values.windDirectionAvg<=280 && weatherInfo.timelines.daily[0].values.windDirectionAvg>=260){
         return 'W';
     }
+}
+
+//Extended Forecast
+let daysForecast = document.getElementById('daysForecast');
+function extendedForecast(weatherInfo){
+    for(let i=1;i<6;i++){
+        let oneDayForecast = document.createElement('section');
+        oneDayForecast.setAttribute('class','oneDayForecast');
+        let oneDayForecastDate = document.createElement('section');
+        oneDayForecastDate.setAttribute('class','date');
+        let oneDayForecastExtendedIcon = document.createElement('section');
+        oneDayForecastExtendedIcon.setAttribute('class','extendedIcon');
+        let oneDayForecastDayWord = document.createElement('section');
+        oneDayForecastDayWord.setAttribute('class','dayWord');
+        let oneDayForecastTempChange = document.createElement('section');
+        oneDayForecastTempChange.setAttribute('class','tempChange');
+
+        oneDayForecastDate.innerText = dayFinder(weatherInfo.timelines.daily[i].time.slice(0,10));
+        checkExtendedWeather(weatherInfo.timelines.daily[i].values,oneDayForecastExtendedIcon,oneDayForecastDayWord);
+        oneDayForecastTempChange.innerText = `${Math.round(weatherInfo.timelines.daily[i].values.temperatureMax)}° | ${Math.round(weatherInfo.timelines.daily[i].values.temperatureMin)}°`;
+
+        oneDayForecast.appendChild(oneDayForecastDate);
+        oneDayForecast.appendChild(oneDayForecastExtendedIcon);
+        oneDayForecast.appendChild(oneDayForecastDayWord);
+        oneDayForecast.appendChild(oneDayForecastTempChange);
+
+        daysForecast.append(oneDayForecast);
+    }
+}
+
+//Checks the weather for extended Forecast
+function checkExtendedWeather(weatherInfo,oneDayForecastExtendedIcon,oneDayForecastDayWord){
+    if(weatherInfo.precipitationProbabilityAvg>35 && weatherInfo.humidityAvg>70){
+        let EIcon = document.createElement('i');
+        EIcon.setAttribute('class','fa-solid fa-cloud-rain');
+        oneDayForecastExtendedIcon.append(EIcon);
+        oneDayForecastDayWord.innerText = 'Rainy' 
+    } else if(weatherInfo.windSpeedAvg>21){
+        let EIcon = document.createElement('i');
+        EIcon.setAttribute('class','fa-solid fa-wind');
+        oneDayForecastExtendedIcon.append(EIcon);
+        oneDayForecastDayWord.innerText = 'Windy';
+    } else if(weatherInfo.cloudCoverAvg<60 && weatherInfo.cloudCoverAvg>30){
+        let EIcon = document.createElement('i');
+        EIcon.setAttribute('class','fa-solid fa-cloud-sun');
+        oneDayForecastExtendedIcon.append(EIcon);
+        oneDayForecastDayWord.innerText = 'Party Cloudy';
+    } else if(weatherInfo.cloudCoverAvg>70){
+        let EIcon = document.createElement('i');
+        EIcon.setAttribute('class','fa-solid fa-cloud');
+        oneDayForecastExtendedIcon.append(EIcon);
+        oneDayForecastDayWord.innerText = 'Cloudy';
+    } else {
+        let EIcon = document.createElement('i');
+        EIcon.setAttribute('class','fa-solid fa-sun');
+        oneDayForecastExtendedIcon.append(EIcon);
+        oneDayForecastDayWord.innerText = 'Clear Sky';
+    }
+}
+
+//Finds the day 
+function dayFinder(date){
+    let now = new Date(date);
+    let day = now.getDay();
+    let dayArr = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return dayArr[day];
 }

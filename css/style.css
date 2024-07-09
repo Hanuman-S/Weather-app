@@ -27,7 +27,8 @@ body{
     flex-direction: column;
     background-image: url('../img/SKY\ pattern.jpg');
     background-size: cover;
-    color: rgba(240, 240, 240, 0.88);
+    color: rgba(224, 224, 224, 0.88);
+    z-index: 1;
 }
 
 header,footer{
@@ -72,9 +73,40 @@ input{
     font-size: 1.5rem;
 }
 
+.dropdownList{
+    position: fixed;
+    overflow: scroll;
+    top:8rem;
+    width:70vw;
+    color : black;
+    max-height : 427px;
+    border-radius: 3vh;
+    z-index: 2;
+}
+
+.dropdownList p{
+    padding: 1rem 2rem;
+    width:100%;
+    background-color: white;
+    font-weight: 350;
+}
+
+.dropdownList p:first-child{
+    border-radius: 3vh 3vh 0 0;
+}
+
+.dropdownList p:last-child{
+    border-radius: 0 0 3vh 3vh;
+}
+
+.dropdownList p:hover{
+    background-color: rgb(234, 234, 234);
+}
+
 .nowWeather h2,.extendedForecast h2{
     font-weight: 300;
     padding-left: 2.5rem;
+    color : rgb(191, 191, 191);
 }
 
 .nowWeather{
@@ -137,6 +169,10 @@ figcaption{
     margin:2px;
 }
 
+.apparentTemp{
+    color : rgb(191, 191, 191);
+}
+
 .space{
     margin-inline:1rem;
     color : whitesmoke;
@@ -145,6 +181,41 @@ figcaption{
 
 .extendedForecast{
     height:30vh;
+    background-image: linear-gradient(rgba(128, 128, 128, 0.527),rgba(245, 245, 245, 0.575));
+}
+
+.daysForecast{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+
+.oneDayForecast{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    height:23vh;
+    padding : 0.5rem;
+    margin : 0  0.75rem 0.75rem;
+}
+
+.extendedIcon i{
+    font-size: 4rem;
+    color: rgba(224, 224, 224, 0.88);
+} 
+
+.dayWord{
+    display: grid;
+    place-content: center;
+}
+
+.tempChanges{
+    font-size:1.25rem;
+}
+
+.date,.dayWord{
+    font-weight:500;
 }
 
 footer{
